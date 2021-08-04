@@ -8,37 +8,32 @@ import UserForm from "./components/userForm";
 class App extends React.Component {
   state = {
     userDataFromChild: [],
+    userFollowersData: [],
   };
 
   userFormCallback = (userFormData) => {
-    this.setState({ userDataFromChild: userFormData });
+    this.setState({ ...this.state, userDataFromChild: userFormData });
   };
-
-  // handleSearch = (evt) => {
-  //   evt.preventDefault();
-  //   axios
-  //     .get(`https://api.github.com/users/${this.state.usernamesearch}`)
-  //     .then((res) => {
-  //       this.setState({ ...this.state, userData: res.data });
-  //       console.log("response data", res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  //   console.log("after axios pull, state", this.state);
-  // };
+  userFormFollowersCallback = (userFormFollowers) => {
+    this.setState({ ...this.state, userFollowersData: userFormFollowers });
+  };
 
   render() {
     return (
       <div>
         <h1>GitHub User</h1>
-        <p>{this.state.userDataFromChild.name}</p>
         <Switch>
           <Route exact path="/">
-            <UserForm userFormCallback={this.userFormCallback} />
+            <UserForm
+              userFormCallback={this.userFormCallback}
+              userFormFollowersCallback={this.userFormFollowersCallback}
+            />
           </Route>
-          <Route path="/usercard">
-            <UserCard userData={this.state.userDataFromChild} />
+          <Route path={`/${this.state.userDataFromChild.login}`}>
+            <UserCard
+              userData={this.state.userDataFromChild}
+              followersData={this.state.userFollowersData}
+            />
           </Route>
         </Switch>
       </div>

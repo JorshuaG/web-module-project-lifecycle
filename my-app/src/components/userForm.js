@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class UserForm extends Component {
   state = {
     usernamesearch: "",
     userData: [],
+    userFollowers: [],
   };
   handleSearch = (evt) => {
     evt.preventDefault();
@@ -15,7 +16,18 @@ class UserForm extends Component {
         this.setState({ ...this.state, userData: res.data });
         console.log("response data", res.data);
         this.props.userFormCallback(res.data);
-        this.props.history.push("/usercard");
+        this.props.history.push({ pathname: this.state.userData.login });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    axios
+      .get(
+        `https://api.github.com/users/${this.state.usernamesearch}/followers`
+      )
+      .then((res) => {
+        this.setState({ ...this.state, userFollowers: res.data });
+        this.props.userFormFollowersCallback(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -41,4 +53,4 @@ class UserForm extends Component {
   }
 }
 
-export default UserForm;
+export default withRouter(UserForm);
