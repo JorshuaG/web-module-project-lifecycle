@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
+import styled from "styled-components";
 
+const FormStyles = styled.div`
+  .formContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+`;
 class UserForm extends Component {
   state = {
     usernamesearch: "",
@@ -38,17 +46,19 @@ class UserForm extends Component {
   };
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleSearch}>
-          <input
-            type="text"
-            placeholder="Enter your Username"
-            onChange={this.handleChange}
-          ></input>
+      <FormStyles>
+        <div className="formContainer">
+          <form onSubmit={this.handleSearch}>
+            <input
+              type="text"
+              placeholder="Enter your Username"
+              onChange={this.handleChange}
+            ></input>
 
-          <button type="submit">Find User</button>
-        </form>
-      </div>
+            <button type="submit">Find User</button>
+          </form>
+        </div>
+      </FormStyles>
     );
   }
 }
